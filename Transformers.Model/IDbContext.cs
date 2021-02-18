@@ -14,6 +14,6 @@ namespace Transformers.Model
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 
         IQueryable<Transformer> GetAllAutobots() => Transformers.Where(t => t.Allegiance == Allegiance.Autobot);
-        IQueryable<Transformer> GetAllDecepticon() => Transformers.Where(t => t.Allegiance == Allegiance.Autobot);
+        IQueryable<Transformer> GetAllDecepticon() => Transformers.Where(t => t.Allegiance == Allegiance.Decepticon);
     }
 }
