@@ -1,0 +1,1 @@
+/p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Threshold=85 /p:ThresholdStat=total /p:ThresholdType=line /p:CoverletOutput="./TestResults/"
