@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transformers.Model", "Transformers.Model\Transformers.Model.csproj", "{DFD3453D-C74F-4C5B-8C51-37595EDF22F0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".format", ".format", "{121ADCF3-6F27-43AC-9F5B-F40E2C07B8B6}"
+ProjectSection(SolutionItems) = preProject
+	.editorconfig = .editorconfig
+	Transformers.sln.DotSettings = Transformers.sln.DotSettings
+EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DFD3453D-C74F-4C5B-8C51-37595EDF22F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFD3453D-C74F-4C5B-8C51-37595EDF22F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFD3453D-C74F-4C5B-8C51-37595EDF22F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFD3453D-C74F-4C5B-8C51-37595EDF22F0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
