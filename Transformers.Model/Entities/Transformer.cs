@@ -4,6 +4,8 @@ namespace Transformers.Model.Entities
 {
     public sealed class Transformer
     {
+        public const int NameMaxLen = 25;
+
         public int Id { get; init; }
         public string Name { get; init; }
 

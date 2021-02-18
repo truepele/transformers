@@ -7,9 +7,9 @@ using Transformers.Model.Enums;
 
 namespace Transformers.Model
 {
-    public interface IDbContext
+    public interface ITransformersDbContext
     {
-        public DbSet<Transformer> Transformers { get; }
+        DbSet<Transformer> Transformers { get; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 
