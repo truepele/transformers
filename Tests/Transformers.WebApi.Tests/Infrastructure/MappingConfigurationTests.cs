@@ -2,7 +2,7 @@ using AutoMapper;
 using Transformers.WebApi.Infrastructure.Mappings;
 using Xunit;
 
-namespace Transformers.WebApi.Tests
+namespace Transformers.WebApi.Tests.Infrastructure
 {
     public class MappingConfigurationTests
     {

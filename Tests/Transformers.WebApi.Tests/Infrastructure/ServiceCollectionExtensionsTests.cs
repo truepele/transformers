@@ -7,7 +7,7 @@ using Transformers.WebApi.Infrastructure;
 using Transformers.WebApi.Settings;
 using Xunit;
 
-namespace Transformers.WebApi.Tests
+namespace Transformers.WebApi.Tests.Infrastructure
 {
     public class ServiceCollectionExtensionsTests
     {

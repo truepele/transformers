@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Transformers.WebApi.Infrastructure.Mappings;
 
-namespace Transformers.WebApi.Tests.Controllers
+namespace Transformers.WebApi.StorageDependent.Tests.Controllers
 {
-    public abstract class ControllerTestBase : EfTestBase
+    public abstract class EfControllerTestBase : EfTestBase
     {
-        protected ControllerTestBase(Action<IServiceCollection> addServicesAction = null) : base(services =>
+        protected EfControllerTestBase(Action<IServiceCollection> addServicesAction = null) : base(services =>
         {
             services.Scan(s => s.FromAssemblyOf<Startup>()
                 .AddClasses(c => c.AssignableTo<ControllerBase>())

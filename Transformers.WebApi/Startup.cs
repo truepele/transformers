@@ -3,9 +3,14 @@ using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Azure.Services.AppAuthentication;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
+using Transformers.DataAccess;
+using Transformers.Model;
 using Transformers.WebApi.Infrastructure;
 using Transformers.WebApi.Infrastructure.Mappings;
 using Transformers.WebApi.Settings;
@@ -66,6 +71,14 @@ namespace Transformers.WebApi
                         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Transformers API V1");
                         c.RoutePrefix = string.Empty;
                     });
+
+                using var scope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
+                if (scope.ServiceProvider.GetRequiredService<IOptions<DataAccessSettings>>().Value.DataAccessType !=
+                    DataAccessType.InMemory)
+                {
+                    // ReSharper disable once PossibleNullReferenceException
+                    (scope.ServiceProvider.GetRequiredService<ITransformersDbContext>() as DbContext).Database.Migrate();
+                }
             }
         }
     }

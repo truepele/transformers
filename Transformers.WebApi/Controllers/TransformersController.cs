@@ -41,5 +41,17 @@ namespace Transformers.WebApi.Controllers
             var result = await query.ToListAsync();
             return _mapper.Map<IEnumerable<TransformerDto>>(result);
         }
+
+        [HttpPost(Name = "CreateTransformer")]
+        [ProducesResponseType(typeof(TransformerDto), StatusCodes.Status200OK)]
+        public async Task<TransformerDto> Create(NewTransformerDto dto)
+        {
+            var entity = _mapper.Map<Transformer>(dto);
+
+            await _dbContext.Transformers.AddAsync(entity);
+            await _dbContext.SaveChangesAsync();
+
+            return _mapper.Map<TransformerDto>(entity);
+        }
     }
 }

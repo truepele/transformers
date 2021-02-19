@@ -9,6 +9,9 @@ namespace Transformers.WebApi.Infrastructure.Mappings
         public TransformerProfile()
         {
             CreateMap<Transformer, TransformerDto>();
+            CreateMap<NewTransformerDto, Transformer>()
+                .ForMember(dst => dst.Id, x => x.Ignore())
+                .ForMember(dst => dst.RowVersion, x => x.Ignore());
         }
     }
 }

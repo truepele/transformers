@@ -4,6 +4,7 @@ namespace Transformers.WebApi.Settings
     {
         Undefined = 0,
         InMemory = 1,
-        Classic = 2
+        InDocker = 2,
+        Classic = 4
     }
 }
