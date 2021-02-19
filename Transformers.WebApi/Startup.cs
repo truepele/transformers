@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Azure.Services.AppAuthentication;
@@ -6,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Transformers.WebApi.Infrastructure;
+using Transformers.WebApi.Infrastructure.Mappings;
 using Transformers.WebApi.Settings;
 
 namespace Transformers.WebApi
@@ -25,15 +27,18 @@ namespace Transformers.WebApi
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers()
+                .AddJsonOptions(options =>
+                    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
             services.AddHealthChecks();
             services.AddSwaggerGen();
 
-            services.Configure<DataAccessSettings>(Configuration.GetSection("DataAccess"));
-
             services
+                .AddAutoMapper(typeof(TransformerProfile))
                 .AddSingleton<AzureServiceTokenProvider>()
                 .AddDbContext();
+
+            services.Configure<DataAccessSettings>(Configuration.GetSection("DataAccess"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
