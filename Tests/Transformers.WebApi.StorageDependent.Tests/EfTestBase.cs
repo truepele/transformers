@@ -57,6 +57,13 @@ namespace Transformers.WebApi.StorageDependent.Tests
             await ctx.SaveChangesAsync();
         }
 
+        protected async Task SeedDataAsync(Action<ITransformersDbContext> seedAction)
+        {
+            var ctx = GetService<ITransformersDbContext>();
+            seedAction(ctx);
+            await ctx.SaveChangesAsync();
+        }
+
         protected async Task AssertResultsAsync(Func<ITransformersDbContext, Task> assertActionAsync)
         {
             await assertActionAsync(GetService<ITransformersDbContext>());

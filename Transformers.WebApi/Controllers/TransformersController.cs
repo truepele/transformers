@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Transformers.Model;
 using Transformers.Model.Entities;
 using Transformers.Model.Enums;
+using Transformers.Model.Services;
 using Transformers.WebApi.Dto;
 
 namespace Transformers.WebApi.Controllers
@@ -18,12 +19,14 @@ namespace Transformers.WebApi.Controllers
     public class TransformersController : ControllerBase
     {
         private readonly ITransformersDbContext _dbContext;
+        private readonly IOverallScoreCalcService _scoreCalculator;
         private readonly IMapper _mapper;
 
 
-        public TransformersController(ITransformersDbContext dbContext, IMapper mapper)
+        public TransformersController(ITransformersDbContext dbContext, IOverallScoreCalcService scoreCalculator, IMapper mapper)
         {
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+            _scoreCalculator = scoreCalculator ?? throw new ArgumentNullException(nameof(scoreCalculator));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
@@ -52,6 +55,21 @@ namespace Transformers.WebApi.Controllers
             await _dbContext.SaveChangesAsync();
 
             return _mapper.Map<TransformerDto>(entity);
+        }
+
+        [HttpGet("{id}/overallScore", Name = "GetOverallScore")]
+        [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetOverallScore(int id)
+        {
+            var transformer = await _dbContext.Transformers.FindAsync(id);
+            if (transformer == null)
+            {
+                return NotFound();
+            }
+
+            var result = await _scoreCalculator.CalculateAsync(transformer);
+            return Ok(result);
         }
     }
 }

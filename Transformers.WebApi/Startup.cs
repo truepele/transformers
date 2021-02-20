@@ -1,16 +1,19 @@
+using System;
+using System.Data;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Services.AppAuthentication;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
-using Transformers.DataAccess;
+using Transformers.DataAccess.Services;
 using Transformers.Model;
+using Transformers.Model.Services;
 using Transformers.WebApi.Infrastructure;
 using Transformers.WebApi.Infrastructure.Mappings;
 using Transformers.WebApi.Settings;
@@ -41,6 +44,10 @@ namespace Transformers.WebApi
             services
                 .AddAutoMapper(typeof(TransformerProfile))
                 .AddSingleton<AzureServiceTokenProvider>()
+                .AddHttpContextAccessor()
+                .AddSingleton<Func<IDbConnection>>(p => () =>
+                    (p.GetRequiredService<IHttpContextAccessor>().HttpContext.RequestServices.GetRequiredService<ITransformersDbContext>() as DbContext).Database.GetDbConnection())
+                .AddSingleton<IOverallScoreCalcService, OverallScoreCalcServiceStoredProc>()
                 .AddDbContext();
 
             services.Configure<DataAccessSettings>(Configuration.GetSection("DataAccess"));
