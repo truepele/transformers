@@ -17,5 +17,9 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="5.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.3" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <EmbeddedResource Include="storedProcs.sql" />
+  </ItemGroup>
 
 </Project>

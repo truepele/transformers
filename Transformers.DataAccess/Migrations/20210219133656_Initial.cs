@@ -37,6 +37,8 @@ namespace Transformers.DataAccess.Migrations
                 column: "Name",
                 unique: true,
                 filter: "[Name] IS NOT NULL");
+
+            MigrationHelper.CreateStoredProcedures(migrationBuilder);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
