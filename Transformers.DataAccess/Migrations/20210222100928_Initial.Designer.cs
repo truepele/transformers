@@ -10,7 +10,7 @@ using Transformers.DataAccess;
 namespace Transformers.DataAccess.Migrations
 {
     [DbContext(typeof(TransformersDbContext))]
-    [Migration("20210222005815_Initial")]
+    [Migration("20210222100928_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -55,6 +55,7 @@ namespace Transformers.DataAccess.Migrations
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
+                        .IsRequired()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
