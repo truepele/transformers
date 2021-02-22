@@ -10,7 +10,7 @@ using Transformers.DataAccess;
 namespace Transformers.DataAccess.Migrations
 {
     [DbContext(typeof(TransformersDbContext))]
-    [Migration("20210219133656_Initial")]
+    [Migration("20210222005815_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -46,6 +46,9 @@ namespace Transformers.DataAccess.Migrations
                     b.Property<string>("Name")
                         .HasMaxLength(25)
                         .HasColumnType("nvarchar(25)");
+
+                    b.Property<int>("OverallRank")
+                        .HasColumnType("int");
 
                     b.Property<int>("Rank")
                         .HasColumnType("int");

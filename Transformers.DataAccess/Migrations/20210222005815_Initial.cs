@@ -8,6 +8,7 @@ namespace Transformers.DataAccess.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            MigrationHelper.CreateStoredProcedures(migrationBuilder);
             migrationBuilder.CreateTable(
                 name: "Transformers",
                 columns: table => new
@@ -15,6 +16,7 @@ namespace Transformers.DataAccess.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: true),
+                    OverallRank = table.Column<int>(type: "int", nullable: false),
                     Allegiance = table.Column<int>(type: "int", nullable: false),
                     Courage = table.Column<int>(type: "int", nullable: false),
                     Endurance = table.Column<int>(type: "int", nullable: false),
@@ -37,8 +39,6 @@ namespace Transformers.DataAccess.Migrations
                 column: "Name",
                 unique: true,
                 filter: "[Name] IS NOT NULL");
-
-            MigrationHelper.CreateStoredProcedures(migrationBuilder);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
