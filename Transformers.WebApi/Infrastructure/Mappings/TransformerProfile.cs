@@ -11,7 +11,8 @@ namespace Transformers.WebApi.Infrastructure.Mappings
             CreateMap<Transformer, TransformerDto>();
             CreateMap<NewTransformerDto, Transformer>()
                 .ForMember(dst => dst.Id, x => x.Ignore())
-                .ForMember(dst => dst.RowVersion, x => x.Ignore());
+                .ForMember(dst => dst.RowVersion, x => x.Ignore())
+                .ForMember(dst => dst.OverallRating, x => x.Ignore());
         }
     }
 }

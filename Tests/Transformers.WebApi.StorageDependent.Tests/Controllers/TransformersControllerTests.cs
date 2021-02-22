@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -8,8 +7,7 @@ using DeepEqual.Syntax;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Transformers.DataAccess.Services;
-using Transformers.Model;
+using NSubstitute;
 using Transformers.Model.Entities;
 using Transformers.Model.Enums;
 using Transformers.Model.Services;
@@ -24,15 +22,15 @@ namespace Transformers.WebApi.StorageDependent.Tests.Controllers
     {
         private readonly TransformersController _sut;
         private readonly IMapper _mapper;
+        private readonly IOverallRatingCalcService _overallScoreCalcStub;
 
         public TransformersControllerTests(): base(services =>
         {
-            services.AddSingleton<IOverallScoreCalcService, OverallScoreCalcServiceStoredProc>()
-                .AddSingleton<Func<IDbConnection>>(p => () =>
-                    (p.GetRequiredService<ITransformersDbContext>() as DbContext).Database.GetDbConnection());
+            services.AddSingleton(Substitute.For<IOverallRatingCalcService>());
         })
         {
             _sut = GetService<TransformersController>();
+            _overallScoreCalcStub = GetService<IOverallRatingCalcService>();
             _mapper = GetService<IMapper>();
         }
 
@@ -46,18 +44,15 @@ namespace Transformers.WebApi.StorageDependent.Tests.Controllers
         [InlineData(Allegiance.Undefined, 1)]
         [InlineData(Allegiance.Autobot, 1)]
         [InlineData(Allegiance.Decepticon, 1)]
-        public async Task Get_ReturnsAll(Allegiance allegiance, int count = 20)
+        public async Task Get_ReturnsExpected(Allegiance allegiance, int count = 20)
         {
             // Arrange
-
             var transformers = TransformersFaker.Generate(count).OrderBy(t => t.Name).ToList();
             var expectedTransformers = allegiance == Allegiance.Undefined
                 ? transformers
                 : transformers.Where(t => t.Allegiance == allegiance).ToList();
-
             await SeedDataAsync(context => context.Transformers.AddRangeAsync(transformers));
             var expectedDtoResult = _mapper.Map<IEnumerable<TransformerDto>>(expectedTransformers);
-
 
             // Act
             var result = await _sut.Get(allegiance);
@@ -67,12 +62,12 @@ namespace Transformers.WebApi.StorageDependent.Tests.Controllers
         }
 
         [Theory]
-        [InlineData(Allegiance.Undefined)]
         [InlineData(Allegiance.Autobot)]
         [InlineData(Allegiance.Decepticon)]
         public async Task Create_CreatesSuccessfully(Allegiance allegiance)
         {
             // Arrange
+            const int expectedOverallRate = 123;
             var newTransformerDto = new NewTransformerDto
             {
                 Allegiance = allegiance,
@@ -86,6 +81,8 @@ namespace Transformers.WebApi.StorageDependent.Tests.Controllers
                 Speed = 7,
                 Strength = 8
             };
+            _overallScoreCalcStub.CalculateAsync(Arg.Is<Transformer>(t => t.Name == newTransformerDto.Name))
+                .Returns(expectedOverallRate);
 
             // Act
             var resultDto = await GetService<TransformersController>().Create(newTransformerDto);
@@ -94,6 +91,7 @@ namespace Transformers.WebApi.StorageDependent.Tests.Controllers
             await AssertResultsAsync(async context =>
             {
                 var result = await context.Transformers.AsQueryable().SingleAsync();
+                Assert.Equal(expectedOverallRate, result.OverallRating);
                 Assert.Equal(newTransformerDto.Allegiance, result.Allegiance);
                 Assert.Equal(newTransformerDto.Courage, result.Courage);
                 Assert.Equal(newTransformerDto.Endurance, result.Endurance);
@@ -107,35 +105,15 @@ namespace Transformers.WebApi.StorageDependent.Tests.Controllers
             });
         }
 
-        [Theory]
-        [InlineData(0,0,0,0,0,0,0,0,0)]
-        [InlineData(1,1,1,1,1,1,1,2,9)]
-        [InlineData(10,0,9,0,8,0,7,0,34)]
-        [InlineData(10,10,10,10,10,10,10,10,80)]
-        public async Task GetOverallScore_ReturnsExpected(
-            int courage,
-            int endurance,
-            int firepower,
-            int intelligence,
-            int skill,
-            int speed,
-            int strength,
-            int rank,
-            int expectedResult)
+        [Fact]
+        public async Task GetOverallScore_ReturnsExpected()
         {
             // Arrange
-            var transformer = new Transformer
-            {
-                Courage = courage,
-                Endurance = endurance,
-                Firepower = firepower,
-                Intelligence = intelligence,
-                Skill = skill,
-                Speed = speed,
-                Strength = strength,
-                Rank = rank
-            };
+            const int expectedResult = 123;
+            var transformer = TransformersFaker.Generate();
             await SeedDataAsync(context => context.Transformers.Add(transformer));
+            _overallScoreCalcStub.CalculateAsync(Arg.Is<Transformer>(t => t.Id == transformer.Id))
+                .Returns(expectedResult);
 
             // Act
             var result = await _sut.GetOverallScore(transformer.Id) as OkObjectResult;

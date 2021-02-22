@@ -3,7 +3,7 @@ using Transformers.Model.Entities;
 
 namespace Transformers.Model.Services
 {
-    public interface IOverallScoreCalcService
+    public interface IOverallRatingCalcService
     {
         Task<int> CalculateAsync(Transformer transformer);
     }

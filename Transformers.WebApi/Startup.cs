@@ -48,7 +48,7 @@ namespace Transformers.WebApi
                 .AddHttpContextAccessor()
                 .AddSingleton<Func<IDbConnection>>(p => () =>
                     (p.GetRequiredService<IHttpContextAccessor>().HttpContext.RequestServices.GetRequiredService<ITransformersDbContext>() as DbContext).Database.GetDbConnection())
-                .AddSingleton<IOverallScoreCalcService, OverallScoreCalcServiceStoredProc>()
+                .AddSingleton<IOverallRatingCalcService, OverallRatingCalcServiceStoredProc>()
                 .AddWarService()
                 .AddDbContext();
 

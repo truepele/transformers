@@ -19,11 +19,11 @@ namespace Transformers.WebApi.Controllers
     public class TransformersController : ControllerBase
     {
         private readonly ITransformersDbContext _dbContext;
-        private readonly IOverallScoreCalcService _scoreCalculator;
+        private readonly IOverallRatingCalcService _scoreCalculator;
         private readonly IMapper _mapper;
 
 
-        public TransformersController(ITransformersDbContext dbContext, IOverallScoreCalcService scoreCalculator, IMapper mapper)
+        public TransformersController(ITransformersDbContext dbContext, IOverallRatingCalcService scoreCalculator, IMapper mapper)
         {
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
             _scoreCalculator = scoreCalculator ?? throw new ArgumentNullException(nameof(scoreCalculator));

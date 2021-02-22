@@ -7,14 +7,14 @@ using Dapper;
 
 namespace Transformers.DataAccess.Services
 {
-    public class OverallScoreCalcServiceStoredProc : IOverallScoreCalcService
+    public class OverallRatingCalcServiceStoredProc : IOverallRatingCalcService
     {
         private readonly Func<IDbConnection> _connectionAccessor;
 
         private const string StoredProcName = "calc_overall_score";
 
 
-        public OverallScoreCalcServiceStoredProc(Func<IDbConnection> connectionAccessor)
+        public OverallRatingCalcServiceStoredProc(Func<IDbConnection> connectionAccessor)
         {
             _connectionAccessor = connectionAccessor ?? throw new ArgumentNullException(nameof(connectionAccessor));
         }
