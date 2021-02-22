@@ -36,8 +36,6 @@ namespace Transformers.Model.Services.War
                 }
             }
 
-            // TODO: Overall rank comparison rule!
-
             return null;
         }
     }
