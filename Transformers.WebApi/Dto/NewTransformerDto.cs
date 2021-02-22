@@ -4,7 +4,7 @@ namespace Transformers.WebApi.Dto
 {
     public class NewTransformerDto
     {
-        public string Name { get; init; }
+        public string Name { get; set; }
         public Allegiance Allegiance { get; set; }
         public int Courage { get; set; }
         public int Endurance { get; set; }

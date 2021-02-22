@@ -2,6 +2,7 @@ using System;
 using System.Data;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -17,6 +18,7 @@ using Transformers.Model.Services;
 using Transformers.Model.Services.War;
 using Transformers.WebApi.Infrastructure;
 using Transformers.WebApi.Infrastructure.Mappings;
+using Transformers.WebApi.Infrastructure.Validators;
 using Transformers.WebApi.Settings;
 
 namespace Transformers.WebApi
@@ -38,7 +40,9 @@ namespace Transformers.WebApi
         {
             services.AddControllers()
                 .AddJsonOptions(options =>
-                    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+                    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()))
+                .AddFluentValidation(fv =>
+                    fv.RegisterValidatorsFromAssemblyContaining<NewTransformerValidator>());
             services.AddHealthChecks();
             services.AddSwaggerGen();
 
