@@ -28,6 +28,7 @@ namespace Transformers.Tests
             Assert.True(rules[0] is SpecialNamesBattleRule);
             Assert.True(rules[1] is StrengthBattleRule);
             Assert.True(rules[2] is SkillBattleRule);
+            Assert.True(rules[3] is OverallRatingBattleRule);
         }
 
         [Fact]

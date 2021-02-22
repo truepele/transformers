@@ -20,7 +20,8 @@ namespace Transformers.Model
                 .AddScoped<IBattlePareIterator, BattlePareIterator>()
                 .AddSingleton<IBattleRule, SpecialNamesBattleRule>()
                 .AddSingleton<IBattleRule, StrengthBattleRule>()
-                .AddSingleton<IBattleRule, SkillBattleRule>();
+                .AddSingleton<IBattleRule, SkillBattleRule>()
+                .AddSingleton<IBattleRule, OverallRatingBattleRule>();
         }
     }
 }
