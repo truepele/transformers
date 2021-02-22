@@ -21,19 +21,19 @@ App will attempt to start a container of mssql server for linux, bind it to a ho
 `ContainerName`, `Image` and `HostPort` are configurable at `DataAccess:DockerSql`.
 
 ## List of 3d party nugets used
-####Dapper - used to call the stored proc in a convenient way
-####Automapper - to map DTOs to entity and in reverse
-####FluentValidation - to validate DTOs
-####Ductus.FluentDocker - to start sql server container when `InDocker` storage option configured
-####Swashbuckle.AspNetCore
+#### Dapper - used to call the stored proc in a convenient way
+#### Automapper - to map DTOs to entity and in reverse
+#### FluentValidation - to validate DTOs
+#### Ductus.FluentDocker - to start sql server container when `InDocker` storage option configured
+#### Swashbuckle.AspNetCore
 
-###Used for tests only:
-####Scrutor - to scan assemblies and register services with the DI
-####Bogus - to generate fake data
-####xunit
-####NSubstitute
-####DeepEqual
-####coverlet
+### Used for tests only:
+#### Scrutor - to scan assemblies and register services with the DI
+#### Bogus - to generate fake data
+#### xunit
+#### NSubstitute
+#### DeepEqual
+#### coverlet
 
 ## Unit tests specifics
 One of the test projects (`Transformers.WebApi.StorageDependent.Tests`) requires real storage connectivity configured at appsettings.Test.json
