@@ -28,9 +28,9 @@ App will attempt to start a container of mssql server for linux, bind it to a ho
 #### Swashbuckle.AspNetCore - for swagger UI
 
 ### Used for tests only:
+#### xunit
 #### Scrutor - to scan assemblies and register services with the DI
 #### Bogus - to generate fake data
-#### xunit
 #### NSubstitute - dependencies substitution
 #### DeepEqual - 'deep equal' assertions
 #### coverlet - code coverage
