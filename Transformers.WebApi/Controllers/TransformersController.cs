@@ -32,8 +32,8 @@ namespace Transformers.WebApi.Controllers
 
 
         [HttpGet(Name = "GetTransformers")]
-        [ProducesResponseType(typeof(IEnumerable<TransformerDto>), StatusCodes.Status200OK)]
-        public async Task<IEnumerable<TransformerDto>> Get(Allegiance allegiance = Allegiance.Undefined)
+        [ProducesResponseType(typeof(IAsyncEnumerable<TransformerDto>), StatusCodes.Status200OK)]
+        public async IAsyncEnumerable<TransformerDto> Get(Allegiance allegiance = Allegiance.Undefined)
         {
             IQueryable<Transformer> query = _dbContext.Transformers.OrderBy(t => t.Name);
             if (allegiance != Allegiance.Undefined)
@@ -41,8 +41,10 @@ namespace Transformers.WebApi.Controllers
                 query = query.Where(t => t.Allegiance == allegiance);
             }
 
-            var result = await query.ToListAsync();
-            return _mapper.Map<IEnumerable<TransformerDto>>(result);
+            await foreach (var t in query.AsAsyncEnumerable())
+            {
+                yield return _mapper.Map<TransformerDto>(t);
+            }
         }
 
         [HttpGet("{id}", Name = "GetTransformer")]

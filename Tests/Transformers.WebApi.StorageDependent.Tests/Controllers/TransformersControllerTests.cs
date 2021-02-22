@@ -55,7 +55,7 @@ namespace Transformers.WebApi.StorageDependent.Tests.Controllers
             var expectedDtoResult = _mapper.Map<IEnumerable<TransformerDto>>(expectedTransformers);
 
             // Act
-            var result = await _sut.Get(allegiance);
+            var result = await _sut.Get(allegiance).ToListAsync();
 
             // Assert
             result.ShouldDeepEqual(expectedDtoResult);
