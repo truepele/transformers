@@ -76,23 +76,20 @@ namespace Transformers.WebApi
                 endpoints.MapHealthChecks("/health");
             });
 
-            if (env.IsDevelopment())
-            {
-                app
-                    .UseSwagger()
-                    .UseSwaggerUI(c =>
-                    {
-                        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Transformers API V1");
-                        c.RoutePrefix = string.Empty;
-                    });
-
-                using var scope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
-                if (scope.ServiceProvider.GetRequiredService<IOptions<DataAccessSettings>>().Value.DataAccessType !=
-                    DataAccessType.InMemory)
+            app
+                .UseSwagger()
+                .UseSwaggerUI(c =>
                 {
-                    // ReSharper disable once PossibleNullReferenceException
-                    (scope.ServiceProvider.GetRequiredService<ITransformersDbContext>() as DbContext).Database.Migrate();
-                }
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Transformers API V1");
+                    c.RoutePrefix = string.Empty;
+                });
+
+            using var scope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
+            if (scope.ServiceProvider.GetRequiredService<IOptions<DataAccessSettings>>().Value.DataAccessType !=
+                DataAccessType.InMemory)
+            {
+                // ReSharper disable once PossibleNullReferenceException
+                (scope.ServiceProvider.GetRequiredService<ITransformersDbContext>() as DbContext).Database.Migrate();
             }
         }
     }
