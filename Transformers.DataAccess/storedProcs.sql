@@ -8,4 +8,4 @@ CREATE PROCEDURE [calc_overall_score]
     @Speed tinyint,
     @Strength tinyint
 AS
-SELECT @Strength + @Speed + @Skill + @Rank + @Firepower + @Intelligence + @Endurance + @Courage as 'OverallRank';
+SELECT @Strength + @Speed + @Skill + @Rank + @Firepower + @Intelligence + @Endurance + @Courage as 'OverallRating';

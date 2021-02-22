@@ -9,7 +9,7 @@ namespace Transformers.Model.Entities
 
         public int Id { get; init; }
         public string Name { get; init; }
-        public int OverallRank { get; set; }
+        public int OverallRating { get; set; }
 
         public Allegiance Allegiance { get; set; }
         public int Courage { get; set; }

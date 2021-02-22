@@ -50,6 +50,7 @@ namespace Transformers.WebApi.Controllers
         public async Task<TransformerDto> Create(NewTransformerDto dto)
         {
             var entity = _mapper.Map<Transformer>(dto);
+            entity.OverallRating = await _scoreCalculator.CalculateAsync(entity);
 
             await _dbContext.Transformers.AddAsync(entity);
             await _dbContext.SaveChangesAsync();

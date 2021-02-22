@@ -16,7 +16,7 @@ namespace Transformers.DataAccess.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: true),
-                    OverallRank = table.Column<int>(type: "int", nullable: false),
+                    OverallRating = table.Column<int>(type: "int", nullable: false),
                     Allegiance = table.Column<int>(type: "int", nullable: false),
                     Courage = table.Column<int>(type: "int", nullable: false),
                     Endurance = table.Column<int>(type: "int", nullable: false),

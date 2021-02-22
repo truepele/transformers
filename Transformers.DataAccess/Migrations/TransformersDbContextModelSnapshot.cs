@@ -45,7 +45,7 @@ namespace Transformers.DataAccess.Migrations
                         .HasMaxLength(25)
                         .HasColumnType("nvarchar(25)");
 
-                    b.Property<int>("OverallRank")
+                    b.Property<int>("OverallRating")
                         .HasColumnType("int");
 
                     b.Property<int>("Rank")
