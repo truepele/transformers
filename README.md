@@ -25,7 +25,7 @@ App will attempt to start a container of mssql server for linux, bind it to a ho
 #### Automapper - to map DTOs to entity and in reverse
 #### FluentValidation - to validate DTOs
 #### Ductus.FluentDocker - to start sql server container when `InDocker` storage option configured
-#### Swashbuckle.AspNetCore
+#### Swashbuckle.AspNetCore - for swagger UI
 
 ### Used for tests only:
 #### Scrutor - to scan assemblies and register services with the DI
