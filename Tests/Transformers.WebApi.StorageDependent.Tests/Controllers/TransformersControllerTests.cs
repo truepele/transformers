@@ -157,7 +157,6 @@ namespace Transformers.WebApi.StorageDependent.Tests.Controllers
         public async Task GetSingle_ReturnsNotFound()
         {
             // Arrange
-            // Arrange
             var transformers = TransformersFaker.Generate(10);
             await SeedDataAsync(context => context.Transformers.AddRange(transformers));
 
@@ -166,6 +165,114 @@ namespace Transformers.WebApi.StorageDependent.Tests.Controllers
 
             // Assert
             Assert.NotNull(result);
+        }
+
+        [Fact]
+        public async Task Update_ReturnsNotFound()
+        {
+            // Arrange
+            var transformers = TransformersFaker.Generate(10);
+            await SeedDataAsync(context => context.Transformers.AddRange(transformers));
+
+            // Act
+            var result = await _sut.Update(10000, new UpdateTransformerDto()) as NotFoundResult;
+
+            // Assert
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public async Task Update_ReturnsConflict()
+        {
+            // Arrange
+            var transformer = TransformersFaker.Generate();
+            await SeedDataAsync(context => context.Transformers.Add(transformer));
+
+            // Act
+            var result = await _sut.Update(transformer.Id, new UpdateTransformerDto { RowVersion = "wrong" }) as ConflictResult;
+
+            // Assert
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public async Task Update_AppliesChanges()
+        {
+            // Arrange
+            var transformer = TransformersFaker
+                .RuleFor(t => t.Allegiance, Allegiance.Decepticon)
+                .Generate();
+            await SeedDataAsync(context => context.Transformers.Add(transformer));
+            var dto = new UpdateTransformerDto
+            {
+                RowVersion = transformer.RowVersion.ToString(),
+                Allegiance = Allegiance.Autobot,
+                Courage = 1,
+                Endurance = 2,
+                Firepower = 3,
+                Intelligence = 4,
+                Name = "test name",
+                Rank = 5,
+                Skill = 6,
+                Speed = 7,
+                Strength = 8
+            };
+
+            // Act
+            var result = await _sut.Update(transformer.Id, dto) as OkObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            await AssertResultsAsync(async context =>
+            {
+                var resultEntity = await context.Transformers.FindAsync(transformer.Id);
+                Assert.Equal(dto.Allegiance, resultEntity.Allegiance);
+                Assert.Equal(dto.Courage, resultEntity.Courage);
+                Assert.Equal(dto.Endurance, resultEntity.Endurance);
+                Assert.Equal(dto.Firepower, resultEntity.Firepower);
+                Assert.Equal(dto.Intelligence, resultEntity.Intelligence);
+                Assert.Equal(dto.Name, resultEntity.Name);
+                Assert.Equal(dto.Rank, resultEntity.Rank);
+                Assert.Equal(dto.Skill, resultEntity.Skill);
+                Assert.Equal(dto.Speed, resultEntity.Speed);
+                Assert.Equal(dto.Strength, resultEntity.Strength);
+                result.Value.ShouldDeepEqual(_mapper.Map<TransformerDto>(resultEntity));
+            });
+        }
+
+        [Fact]
+        public async Task Delete_ReturnsNotFound()
+        {
+            // Arrange
+            var transformers = TransformersFaker.Generate(10);
+            await SeedDataAsync(context => context.Transformers.AddRange(transformers));
+
+            // Act
+            var result = await _sut.Delete(10000) as NotFoundResult;
+
+            // Assert
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public async Task Delete_DeletesExpectedRecord()
+        {
+            // Arrange
+            var transformers = TransformersFaker.Generate(10);
+            var transformer = transformers[3];
+            await SeedDataAsync(context => context.Transformers.AddRange(transformers));
+
+            // Act
+            var result = await _sut.Delete(transformer.Id) as OkResult;
+
+            // Assert
+            Assert.NotNull(result);
+            await AssertResultsAsync(async context =>
+            {
+                var t = await context.Transformers.FindAsync(transformer.Id);
+                Assert.Null(t);
+                Assert.Equal(transformers.Count - 1, context.Transformers.Count());
+            });
         }
     }
 }

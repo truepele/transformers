@@ -1,16 +1,10 @@
-using System.ComponentModel.DataAnnotations;
 using Transformers.Model.Enums;
 
-namespace Transformers.Model.Entities
+namespace Transformers.WebApi.Dto
 {
-    public sealed class Transformer
+    public class UpdateTransformerDto
     {
-        public const int NameMaxLen = 25;
-
-        public int Id { get; init; }
         public string Name { get; init; }
-        public int OverallRating { get; set; }
-
         public Allegiance Allegiance { get; set; }
         public int Courage { get; set; }
         public int Endurance { get; set; }
@@ -20,8 +14,6 @@ namespace Transformers.Model.Entities
         public int Speed { get; set; }
         public int Strength { get; set; }
         public int Rank { get; set; }
-
-        [Timestamp]
-        public ulong RowVersion { get; set; }
+        public string RowVersion { get; set; }
     }
 }

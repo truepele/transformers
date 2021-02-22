@@ -15,6 +15,6 @@ namespace Transformers.WebApi.Dto
         public int Speed { get; set; }
         public int Strength { get; set; }
         public int Rank { get; set; }
-        public byte[] RowVersion { get; set; }
+        public string RowVersion { get; set; }
     }
 }

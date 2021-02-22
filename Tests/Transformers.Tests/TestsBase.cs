@@ -44,7 +44,7 @@ namespace Transformers.Tests
                 .RuleFor(o => o.Skill, f => f.Random.Number(1, 10))
                 .RuleFor(o => o.Speed, f => f.Random.Number(1, 10))
                 .RuleFor(o => o.Strength, f => f.Random.Number(1, 10))
-                .RuleFor(o => o.RowVersion, _ => null)
+                .RuleFor(o => o.RowVersion, _ => 0u)
                 .RuleFor(o => o.OverallRating, f => f.Random.Number(1, 100));
         }
 

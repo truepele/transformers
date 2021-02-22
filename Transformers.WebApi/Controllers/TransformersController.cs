@@ -50,13 +50,28 @@ namespace Transformers.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetSingle(int id)
         {
-            var transformer = await _dbContext.Transformers.FindAsync(id);
-            if (transformer == null)
+            var entity = await _dbContext.Transformers.FindAsync(id);
+            if (entity == null)
             {
                 return NotFound();
             }
 
-            return Ok(_mapper.Map<TransformerDto>(transformer));
+            return Ok(_mapper.Map<TransformerDto>(entity));
+        }
+
+        [HttpGet("{id}/overallScore", Name = "GetOverallScore")]
+        [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetOverallScore(int id)
+        {
+            var entity = await _dbContext.Transformers.FindAsync(id);
+            if (entity == null)
+            {
+                return NotFound();
+            }
+
+            var result = await _scoreCalculator.CalculateAsync(entity);
+            return Ok(result);
         }
 
         [HttpPost(Name = "CreateTransformer")]
@@ -72,19 +87,43 @@ namespace Transformers.WebApi.Controllers
             return _mapper.Map<TransformerDto>(entity);
         }
 
-        [HttpGet("{id}/overallScore", Name = "GetOverallScore")]
-        [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+        [HttpPut("{id}", Name = "UpdateTransformer")]
+        [ProducesResponseType(typeof(TransformerDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetOverallScore(int id)
+        public async Task<IActionResult> Update(int id, UpdateTransformerDto dto)
         {
-            var transformer = await _dbContext.Transformers.FindAsync(id);
-            if (transformer == null)
+            var entity = await _dbContext.Transformers.FindAsync(id);
+            if (entity == null)
+            {
+                return NotFound();
+            }
+            if (entity.RowVersion.ToString() != dto.RowVersion)
+            {
+                return Conflict();
+            }
+
+            _mapper.Map(dto, entity);
+            entity.OverallRating = await _scoreCalculator.CalculateAsync(entity);
+            await _dbContext.SaveChangesAsync();
+
+            return Ok(_mapper.Map<TransformerDto>(entity));
+        }
+
+        [HttpDelete("{id}", Name = "DeleteTransformer")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var entity = await _dbContext.Transformers.FindAsync(id);
+            if (entity == null)
             {
                 return NotFound();
             }
 
-            var result = await _scoreCalculator.CalculateAsync(transformer);
-            return Ok(result);
+            _dbContext.Transformers.Remove(entity);
+            await _dbContext.SaveChangesAsync();
+
+            return Ok();
         }
     }
 }

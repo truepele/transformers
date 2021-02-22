@@ -10,6 +10,7 @@ using Xunit;
 
 namespace Transformers.WebApi.StorageDependent.Tests.Services
 {
+    [Collection(nameof(EfTestCollection))]
     public class OverallScoreCalcServiceStoredProcTests : EfTestBase
     {
         private readonly OverallRatingCalcServiceStoredProc _sut;
