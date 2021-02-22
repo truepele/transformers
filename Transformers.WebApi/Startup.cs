@@ -14,6 +14,7 @@ using Microsoft.Extensions.Options;
 using Transformers.DataAccess.Services;
 using Transformers.Model;
 using Transformers.Model.Services;
+using Transformers.Model.Services.War;
 using Transformers.WebApi.Infrastructure;
 using Transformers.WebApi.Infrastructure.Mappings;
 using Transformers.WebApi.Settings;
@@ -48,9 +49,11 @@ namespace Transformers.WebApi
                 .AddSingleton<Func<IDbConnection>>(p => () =>
                     (p.GetRequiredService<IHttpContextAccessor>().HttpContext.RequestServices.GetRequiredService<ITransformersDbContext>() as DbContext).Database.GetDbConnection())
                 .AddSingleton<IOverallScoreCalcService, OverallScoreCalcServiceStoredProc>()
+                .AddWarService()
                 .AddDbContext();
 
             services.Configure<DataAccessSettings>(Configuration.GetSection("DataAccess"));
+            services.Configure<WarSettings>(Configuration.GetSection("War"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

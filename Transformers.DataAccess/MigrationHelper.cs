@@ -1,9 +1,11 @@
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Transformers.DataAccess
 {
+    [ExcludeFromCodeCoverage]
     internal static class MigrationHelper
     {
         public static void CreateStoredProcedures(MigrationBuilder migrationBuilder)

@@ -19,6 +19,7 @@ using Xunit;
 
 namespace Transformers.WebApi.StorageDependent.Tests.Controllers
 {
+    [Collection(nameof(EfTestCollection))]
     public class TransformersControllerTests : EfControllerTestBase
     {
         private readonly TransformersController _sut;
@@ -92,7 +93,7 @@ namespace Transformers.WebApi.StorageDependent.Tests.Controllers
             // Assert
             await AssertResultsAsync(async context =>
             {
-                var result = await context.Transformers.SingleAsync();
+                var result = await context.Transformers.AsQueryable().SingleAsync();
                 Assert.Equal(newTransformerDto.Allegiance, result.Allegiance);
                 Assert.Equal(newTransformerDto.Courage, result.Courage);
                 Assert.Equal(newTransformerDto.Endurance, result.Endurance);
