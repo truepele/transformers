@@ -17,7 +17,7 @@ Just a usual connection to SQL server. Connection details configured via `DataAc
 
 #### InDocker (Requires Docker installed and running)
 App will attempt to start a container of mssql server for linux, bind it to a host port and then will connect to the port for business.
-`ContainerName`, `Image` and `HostPort` are configurable at `DataAccess:DockerSql`.
+`ContainerName`, `Image` and `HostPort` are configurable at `DataAccess:DockerSql` (see appsettings.Development.json for an example).
 
 ### Running from an IDE
 Recommended launch profile is `Transformers.WebApi` (self-hosted), navigates to Swagger UI by default (http://localhost:5000/index.html).
