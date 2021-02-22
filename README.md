@@ -14,7 +14,7 @@ Solution uses EF Core migration mechanism to create DB (including the stored pro
 Configuration key: `DataAccess:DataAccessType`
   
 #### Classic
-Just a usual connection to SQL server. Connection details configured via `DataAccess:SqlConnectionStringBuilder` (Matches properties of `SqlConnectionStringBuilder` class)
+Just a usual connection to SQL server. Connection details configured via `DataAccess:SqlConnectionStringBuilder` (Matches properties of the .net `ConnectionStringBuilder` class)
 
 #### InDocker (Requires Docker installed and running)
 App will attempt to start a container of mssql server for linux, bind it to a host port and then will connect to the port for business.
