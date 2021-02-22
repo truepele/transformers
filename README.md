@@ -1,6 +1,8 @@
 # transformers
 
 ## Run instructions
+**App targets net5.0 framework**
+
 Please configure storage connectivity, build and run the app, use Swagger UI.
 
 ### Storage configuration
@@ -28,6 +30,7 @@ dotnet build
 cd ./Transformers.WebApi/bin/Debug/net5.0/
 dotnet ./Transformers.WebApi.dll
 ```
+Navigate to http://localhost:5000 in a browser
 
 ## List of 3d party nugets used
 #### Dapper - used to call the stored proc in a convenient way
