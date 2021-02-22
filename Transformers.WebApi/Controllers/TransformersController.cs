@@ -45,6 +45,20 @@ namespace Transformers.WebApi.Controllers
             return _mapper.Map<IEnumerable<TransformerDto>>(result);
         }
 
+        [HttpGet("{id}", Name = "GetTransformer")]
+        [ProducesResponseType(typeof(TransformerDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetSingle(int id)
+        {
+            var transformer = await _dbContext.Transformers.FindAsync(id);
+            if (transformer == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(_mapper.Map<TransformerDto>(transformer));
+        }
+
         [HttpPost(Name = "CreateTransformer")]
         [ProducesResponseType(typeof(TransformerDto), StatusCodes.Status200OK)]
         public async Task<TransformerDto> Create(NewTransformerDto dto)

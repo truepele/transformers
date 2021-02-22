@@ -136,5 +136,36 @@ namespace Transformers.WebApi.StorageDependent.Tests.Controllers
             // Assert
             Assert.NotNull(result);
         }
+
+        [Fact]
+        public async Task GetSingle_ReturnsExpected()
+        {
+            // Arrange
+            var transformers = TransformersFaker.Generate(10);
+            await SeedDataAsync(context => context.Transformers.AddRange(transformers));
+            var transformer = transformers[3];
+
+            // Act
+            var result = await _sut.GetSingle(transformer.Id) as OkObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            ((TransformerDto)result.Value).ShouldDeepEqual(_mapper.Map<TransformerDto>(transformer));
+        }
+
+        [Fact]
+        public async Task GetSingle_ReturnsNotFound()
+        {
+            // Arrange
+            // Arrange
+            var transformers = TransformersFaker.Generate(10);
+            await SeedDataAsync(context => context.Transformers.AddRange(transformers));
+
+            // Act
+            var result = await _sut.GetSingle(10000) as NotFoundResult;
+
+            // Assert
+            Assert.NotNull(result);
+        }
     }
 }
