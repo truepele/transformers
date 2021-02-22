@@ -2,7 +2,7 @@
 
 ## Run instructions
 Please build and run the app, use Swagger UI.
-Recommended launch profile is `Transformers.WebApi` (self-hosted), navigates to Swagger UI by default. 
+Recommended launch profile is `Transformers.WebApi` (self-hosted), navigates to Swagger UI by default (http://localhost:5000/index.html). 
 
 ### Storage
 Solution uses EF Core migration mechanism to create DB (including the stored proc).
