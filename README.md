@@ -31,9 +31,9 @@ App will attempt to start a container of mssql server for linux, bind it to a ho
 #### Scrutor - to scan assemblies and register services with the DI
 #### Bogus - to generate fake data
 #### xunit
-#### NSubstitute
-#### DeepEqual
-#### coverlet
+#### NSubstitute - dependencies substitution
+#### DeepEqual - 'deep equal' assertions
+#### coverlet - code coverage
 
 ## Unit tests specifics
 One of the test projects (`Transformers.WebApi.StorageDependent.Tests`) requires real storage connectivity configured at appsettings.Test.json
