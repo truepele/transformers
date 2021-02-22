@@ -1,10 +1,9 @@
 # transformers
 
 ## Run instructions
-Please build and run the app, use Swagger UI.
-Recommended launch profile is `Transformers.WebApi` (self-hosted), navigates to Swagger UI by default (http://localhost:5000/index.html). 
+Please configure storage connectivity, build and run the app, use Swagger UI.
 
-### Storage
+### Storage configuration
 Solution uses EF Core migration mechanism to create DB (including the stored proc).
 
 2 variants of storage are supported (configurable via appsettings.json or appsettings.Development.json):
@@ -12,13 +11,23 @@ Solution uses EF Core migration mechanism to create DB (including the stored pro
 - `InDocker`
 
 Configuration key: `DataAccess:DataAccessType`
-  
+
 #### Classic
 Just a usual connection to SQL server. Connection details configured via `DataAccess:SqlConnectionStringBuilder` (Matches properties of the .net `ConnectionStringBuilder` class)
 
 #### InDocker (Requires Docker installed and running)
 App will attempt to start a container of mssql server for linux, bind it to a host port and then will connect to the port for business.
 `ContainerName`, `Image` and `HostPort` are configurable at `DataAccess:DockerSql`.
+
+### Running from an IDE
+Recommended launch profile is `Transformers.WebApi` (self-hosted), navigates to Swagger UI by default (http://localhost:5000/index.html).
+
+### Running from command line
+```
+dotnet build
+cd ./Transformers.WebApi/bin/Debug/net5.0/
+dotnet ./Transformers.WebApi.dll
+```
 
 ## List of 3d party nugets used
 #### Dapper - used to call the stored proc in a convenient way
