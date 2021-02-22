@@ -32,7 +32,7 @@ dotnet ./Transformers.WebApi.dll
 ```
 Navigate to http://localhost:5000 in a browser
 
-## List of 3d party nugets used
+## List of third party nugets used
 #### Dapper - used to call the stored proc in a convenient way
 #### Automapper - to map DTOs to entity and in reverse
 #### FluentValidation - to validate DTOs
