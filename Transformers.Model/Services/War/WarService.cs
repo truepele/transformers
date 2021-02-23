@@ -29,7 +29,7 @@ namespace Transformers.Model.Services.War
         {
             var autobotsHaveSpecialName = await _dbContext.GetAllAutobots()
                 .Where(a => _specialNames.Contains(a.Name)).AnyAsync();
-            var decepticonsHaveSpecialName = await _dbContext.GetAllAutobots()
+            var decepticonsHaveSpecialName = await _dbContext.GetAllDecepticon()
                 .Where(a => _specialNames.Contains(a.Name)).AnyAsync();
             if (autobotsHaveSpecialName && decepticonsHaveSpecialName)
             {

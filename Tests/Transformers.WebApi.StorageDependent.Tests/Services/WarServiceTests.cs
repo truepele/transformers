@@ -128,5 +128,35 @@ namespace Transformers.WebApi.StorageDependent.Tests.Services
             // Assert
             Assert.Empty(result);
         }
+
+        [Theory]
+        [InlineData("Optimus", "Some name")]
+        [InlineData("some name", "Optimus")]
+        public async Task Get_DoesNotEndWar_WhenOneArmyHaveSpecialName(string autobotSpecialName, string decepticonSpecialName)
+        {
+            // Arrange
+            var transformers = new List<Transformer>
+            {
+                TransformersFaker.RuleFor(t => t.Rank, 10).RuleFor(t => t.Courage, 5)
+                    .RuleFor(t => t.Name, autobotSpecialName)
+                    .RuleFor(t => t.Allegiance, Allegiance.Autobot).Generate(),
+                TransformersFaker.RuleFor(t => t.Rank, 9).RuleFor(t => t.Courage, 2)
+                    .RuleFor(t => t.Name, "Name1")
+                    .RuleFor(t => t.Allegiance, Allegiance.Decepticon).Generate(),
+                TransformersFaker.RuleFor(t => t.Rank, 9).RuleFor(t => t.Courage, 2)
+                    .RuleFor(t => t.Name, "Name2")
+                    .RuleFor(t => t.Allegiance, Allegiance.Autobot).Generate(),
+                TransformersFaker.RuleFor(t => t.Rank, 8).RuleFor(t => t.Courage, 5)
+                    .RuleFor(t => t.Name, decepticonSpecialName)
+                    .RuleFor(t => t.Allegiance, Allegiance.Decepticon).Generate(),
+            };
+            await SeedDataAsync(ctx => ctx.Transformers.AddRangeAsync(transformers.OrderBy(t => t.Endurance)));
+
+            // Act
+            var result = await _sut.PerformWar().ToListAsync();
+
+            // Assert
+            Assert.NotEmpty(result);
+        }
     }
 }
