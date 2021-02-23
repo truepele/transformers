@@ -13,9 +13,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transformers.WebApi", "Transformers.WebApi\Transformers.WebApi.csproj", "{06E4C5F0-2202-49E0-9AE1-30E61D4C4A08}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{D7D76F1C-9E7A-4794-AD22-4AED5A91B1AA}"
-ProjectSection(SolutionItems) = preProject
-	Tests\Directory.Build.rsp = .\Directory.Build.rsp
-EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transformers.WebApi.StorageDependent.Tests", "Tests\Transformers.WebApi.StorageDependent.Tests\Transformers.WebApi.StorageDependent.Tests.csproj", "{EDBABE93-F0DA-403F-80E1-3F1CD2CB4721}"
 EndProject
